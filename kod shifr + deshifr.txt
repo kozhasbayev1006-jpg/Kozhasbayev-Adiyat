@@ -1,0 +1,63 @@
+alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+
+def encrypt(text, key):
+    text = text.upper()
+    key = key.upper()
+
+    result = ""
+    previous = 0
+
+    for i in range(len(text)):
+        text_pos = alphabet.index(text[i])
+        key_pos = alphabet.index(key[i % len(key)])
+
+        if i == 0:
+            encrypted_pos = (text_pos + key_pos) % 26
+        else:
+            encrypted_pos = (text_pos + key_pos + previous) % 26
+
+        result += alphabet[encrypted_pos]
+        previous = text_pos
+
+    return result
+
+
+def decrypt(text, key):
+    text = text.upper()
+    key = key.upper()
+
+    result = ""
+    previous = 0
+
+    for i in range(len(text)):
+        encrypted_pos = alphabet.index(text[i])
+        key_pos = alphabet.index(key[i % len(key)])
+
+        if i == 0:
+            original_pos = (encrypted_pos - key_pos) % 26
+        else:
+            original_pos = (encrypted_pos - key_pos - previous) % 26
+
+        result += alphabet[original_pos]
+        previous = original_pos
+
+    return result
+
+
+print("=== PCW-1 CIPHER ===")
+print("1 - Encrypt")
+print("2 - Decrypt")
+
+choice = input("Choose: ")
+text = input("Enter text: ")
+key = input("Enter key word: ")
+
+if choice == "1":
+    print("Encrypted:", encrypt(text, key))
+
+elif choice == "2":
+    print("Decrypted:", decrypt(text, key))
+
+else:
+    print("Wrong choice")
